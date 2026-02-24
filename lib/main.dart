@@ -2,6 +2,93 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
+// تأكد من عمل استدعاء (import) لجميع الشاشات
+import 'auth/otp_screen.dart';
+import 'auth/reset_password_screen.dart';
+import 'auth/signup_screen.dart';
+import 'auth/unified_login_screen.dart';
+import 'providers/settings_provider.dart';
+import 'theme/app_theme.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => SettingsProvider(),
+      child: Consumer<SettingsProvider>(
+        builder: (context, settings, _) {
+
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'CarZone',
+
+            // الثيم يعمل الآن بأمان
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: settings.isLoaded ? settings.themeMode : ThemeMode.system,
+
+            locale: settings.isLoaded ? settings.locale : const Locale('ar'),
+            supportedLocales: const [Locale('en'), Locale('ar')],
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+
+            // الشاشة الافتراضية
+            home: settings.isLoaded
+                ? const UnifiedLoginScreen()
+                : const Scaffold(body: Center(child: CircularProgressIndicator())),
+
+            // 👇 أعدنا هنا تعريف المسارات لكي تفتح صفحات إنشاء الحساب ونسيان كلمة المرور 👇
+            routes: {
+              '/login': (_) => const UnifiedLoginScreen(),
+              '/signup': (_) => const SignupScreen(),
+            },
+            onGenerateRoute: (settingsRoute) {
+              // استقبال البيانات بشكل آمن لمنع الانهيار
+              final args = settingsRoute.arguments as Map?;
+
+              switch (settingsRoute.name) {
+                case '/otp':
+                  return MaterialPageRoute(
+                    builder: (_) => OtpScreen(
+                      identifier: args?['identifier']?.toString() ?? '',
+                      method: args?['method']?.toString() ?? 'phone',
+                    ),
+                  );
+                case '/reset-password':
+                  return MaterialPageRoute(
+                    builder: (_) => ResetPasswordScreen(
+                      identifier: args?['identifier']?.toString() ?? '',
+                      method: args?['method']?.toString() ?? 'phone',
+                    ),
+                  );
+              }
+              return null;
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+
+
+
+/*
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+
 import 'auth/otp_screen.dart';
 import 'auth/reset_password_screen.dart';
 import 'auth/signup_screen.dart';
@@ -85,3 +172,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+ */

@@ -19,10 +19,7 @@ class AppTheme {
       backgroundColor: AppPalette.primary,
       centerTitle: true,
     ),
-    textTheme: GoogleFonts.cairoTextTheme().apply(
-      bodyColor: AppPalette.lightTextPrimary,
-      displayColor: AppPalette.lightTextPrimary,
-    ),
+    fontFamily: 'Cairo',
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppPalette.lightCard,
@@ -67,10 +64,7 @@ class AppTheme {
       backgroundColor: AppPalette.primary,
       centerTitle: true,
     ),
-    textTheme: GoogleFonts.cairoTextTheme(ThemeData.dark().textTheme).apply(
-      bodyColor: AppPalette.darkTextPrimary,
-      displayColor: AppPalette.darkTextPrimary,
-    ),
+    fontFamily: 'Cairo',
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppPalette.darkCard,
