@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +39,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen>
     with SingleTickerProviderStateMixin {
-  SignupRole _selectedRole = SignupRole.customer;
+  SignupRole _selectedRole = SignupRole.seller;
   PartsType _partsType = PartsType.newParts;
   final _formKey = GlobalKey<FormState>();
 
@@ -206,15 +206,20 @@ class _SignupScreenState extends State<SignupScreen>
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.12), shape: BoxShape.circle),
-          child: Icon(Icons.account_circle_outlined,
+          child: Icon(Icons.storefront_rounded,
               size: 48, color: heroText(isDark)),
         ),
         const SizedBox(height: 12),
-        Text(t(isArabic, 'إنشاء حساب جديد', 'Create account'),
+        Text(t(isArabic, 'انضم إلينا كـ بائع شريك', 'Join as a Seller Partner'),
+            textAlign: TextAlign.center,
             style: ts(isArabic,
-                size: 26, weight: FontWeight.w800, color: heroText(isDark))),
-        Text(t(isArabic, 'ابدأ رحلتك  معنا', 'Start your  journey with us'),
-            style: ts(isArabic, size: 14, color: Colors.white70)),
+                size: 24, weight: FontWeight.w800, color: heroText(isDark))),
+        const SizedBox(height: 6),
+        Text(
+            t(isArabic, 'أنشئ حسابك التجاري وابدأ في بيع وتوريد قطع الغيار',
+                'Create your merchant account and start selling auto parts'),
+            textAlign: TextAlign.center,
+            style: ts(isArabic, size: 13.5, color: Colors.white70)),
       ],
     );
   }
@@ -236,18 +241,10 @@ class _SignupScreenState extends State<SignupScreen>
         key: _formKey,
         child: Column(
           children: [
-            _roleSelector(isArabic, isDark),
-            const SizedBox(height: 24),
             CustomInputField(
-              controller: _selectedRole == SignupRole.customer
-                  ? _fullNameController
-                  : _storeNameController,
-              label: _selectedRole == SignupRole.customer
-                  ? t(isArabic, 'الاسم الكامل', 'Full Name')
-                  : t(isArabic, 'اسم المحل', 'Store Name'),
-              icon: _selectedRole == SignupRole.customer
-                  ? Icons.person_outline
-                  : Icons.store_outlined,
+              controller: _storeNameController,
+              label: t(isArabic, 'اسم المحل / المركز التجاري', 'Store / Merchant Name'),
+              icon: Icons.storefront_outlined,
               isDark: isDark,
               isArabic: isArabic,
               validator: (value) => value == null || value.trim().isEmpty
@@ -432,46 +429,6 @@ class _SignupScreenState extends State<SignupScreen>
     );
   }
 
-  Widget _roleSelector(bool isArabic, bool isDark) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(t(isArabic, 'اختر نوع الحساب', 'Choose Account Type'),
-            style: ts(isArabic,
-                size: 16, weight: FontWeight.bold, color: textPrimary(isDark))),
-        const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: RoleSelectionTile(
-                title: t(isArabic, 'عميل', 'Customer'),
-                subtitle: t(isArabic, 'صاحب سيارة', 'Car Owner'),
-                icon: Icons.directions_car_outlined,
-                selected: _selectedRole == SignupRole.customer,
-                onTap: () =>
-                    setState(() => _selectedRole = SignupRole.customer),
-                isDark: isDark,
-                isArabic: isArabic,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: RoleSelectionTile(
-                title: t(isArabic, 'بائع', 'Seller'),
-                subtitle: t(isArabic, 'قطع غيار', 'Parts Seller'),
-                icon: Icons.storefront_outlined,
-                selected: _selectedRole == SignupRole.seller,
-                onTap: () => setState(() => _selectedRole = SignupRole.seller),
-                isDark: isDark,
-                isArabic: isArabic,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
   Widget _buildSubmitButton(bool isArabic, bool isDark) {
     return SizedBox(
       width: double.infinity,
@@ -491,7 +448,7 @@ class _SignupScreenState extends State<SignupScreen>
                 child: CircularProgressIndicator(
                     color: Colors.white, strokeWidth: 2.5),
               )
-            : Text(t(isArabic, 'إنشاء الحساب', 'Create Account'),
+            : Text(t(isArabic, 'تسجيل حساب تجاري جديد', 'Register Merchant Account'),
                 style: ts(isArabic,
                     size: 16, weight: FontWeight.bold, color: Colors.white)),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import '../auth/unified_login_screen.dart';
 import '../providers/settings_provider.dart';
 import '../theme/app_colors.dart';
 import 'create_custom_part_request_screen.dart';
@@ -38,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // 1. Welcome Card
-            _buildWelcomeCard(isArabic, isDark),
+            _buildWelcomeCard(isArabic, isDark, settings),
 
             const SizedBox(height: 20),
 
@@ -54,7 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
             // 4. Featured Offers Section (العروض والخدمات المميزة)
             _buildSectionHeader(
-              title: _t(isArabic, 'العروض والخدمات المميزة', 'Featured Services & Offers'),
+              title: _t(isArabic, 'العروض والخدمات المميزة',
+                  'Featured Services & Offers'),
               actionText: _t(isArabic, 'عرض الكل', 'View All'),
               isArabic: isArabic,
               isDark: isDark,
@@ -75,8 +77,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// Welcome Card matching the provided UI screenshot design
-  Widget _buildWelcomeCard(bool isArabic, bool isDark) {
+  /// Welcome Card matching guest vs logged-in user UI state
+  Widget _buildWelcomeCard(
+      bool isArabic, bool isDark, SettingsProvider settings) {
+    final isLoggedIn = settings.isLoggedIn;
+    final customerName = isLoggedIn
+        ? _t(isArabic, settings.userName, 'Yasser Al-Selwi')
+        : _t(isArabic, 'عميل كار زون', 'CarZone Customer');
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(22),
@@ -138,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          _t(isArabic, 'ياسر الحكيمي', 'Yasser Al-Hakimi'),
+                          customerName,
                           style: GoogleFonts.cairo(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -172,50 +180,118 @@ class _HomeScreenState extends State<HomeScreen> {
 
               const SizedBox(height: 20),
 
-              // Verified Badge Row: "حسابك موثّق وآمن"
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 6),
+              // Bottom Badge Row: Logged In ("حسابك موثّق وآمن") vs Visitor Guest ("سجّل دخولك الآن لتسهيل وتسريع خدماتك")
+              if (isLoggedIn)
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.18),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.25),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.check,
+                              size: 13,
+                              color: AppPalette.primary,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            _t(isArabic, 'حسابك موثّق وآمن',
+                                'Your account is verified & secure'),
+                            style: GoogleFonts.cairo(
+                              fontSize: 13,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              else
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const UnifiedLoginScreen(),
+                      ),
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.18),
+                      color: Colors.white.withOpacity(0.22),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.25),
+                        color: Colors.white.withOpacity(0.4),
+                        width: 1.2,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(4),
                           decoration: const BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
-                            Icons.check,
+                            Icons.login_rounded,
                             size: 13,
                             color: AppPalette.primary,
                           ),
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          _t(isArabic, 'حسابك موثّق وآمن',
-                              'Your account is verified & secure'),
-                          style: GoogleFonts.cairo(
-                            fontSize: 13,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
+                          _t(
+                            isArabic,
+                            'سجّل دخولك الآن لتسهيل وتسريع خدماتك',
+                            'Sign in now to simplify & speed up your services',
                           ),
+                          style: GoogleFonts.cairo(
+                            fontSize: 12.5,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        const Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 12,
+                          color: Colors.white,
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
             ],
           ),
         ],
@@ -493,7 +569,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final offers = [
       {
         'title': _t(isArabic, 'فحص شامل للسيارة', 'Full Car Inspection'),
-        'subtitle': _t(isArabic, 'فحص 50 نقطة ميكانيكية', '50 Mechanical points check'),
+        'subtitle':
+            _t(isArabic, 'فحص 50 نقطة ميكانيكية', '50 Mechanical points check'),
         'price': '150 \$',
         'rating': '4.9',
         'icon': Icons.car_repair,
@@ -501,7 +578,8 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       {
         'title': _t(isArabic, 'تغيير زيت المحرك الأصلي', 'Engine Oil Change'),
-        'subtitle': _t(isArabic, 'زيت كاسترول 10,000 كم', 'Castrol Oil 10,000 km'),
+        'subtitle':
+            _t(isArabic, 'زيت كاسترول 10,000 كم', 'Castrol Oil 10,000 km'),
         'price': '45 \$',
         'rating': '4.8',
         'icon': Icons.oil_barrel_rounded,
@@ -671,7 +749,8 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _t(isArabic, 'حالة طلب الصيانة الحالي', 'Current Repair Status'),
+                  _t(isArabic, 'حالة طلب الصيانة الحالي',
+                      'Current Repair Status'),
                   style: GoogleFonts.cairo(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,

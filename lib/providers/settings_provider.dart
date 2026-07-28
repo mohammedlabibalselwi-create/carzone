@@ -5,9 +5,12 @@ import 'dart:ui' as ui;
 class SettingsProvider extends ChangeNotifier {
   static const String _darkKey = 'isDarkMode';
   static const String _langKey = 'isEnglish';
+  static const String _loginKey = 'isLoggedIn';
 
   bool _isDarkMode = false;
   bool _isEnglish = true;
+  bool _isLoggedIn = false;
+  String _userName = 'ياسر الصلوي';
   bool _loaded = false;
 
   bool get isDarkMode => _isDarkMode;
@@ -15,9 +18,16 @@ class SettingsProvider extends ChangeNotifier {
   bool get isArabic => !_isEnglish;
   bool get isLoaded => _loaded;
 
+  // 👤 Auth State
+  bool get isLoggedIn => _isLoggedIn;
+  String get userName => _userName;
+  String get displayName =>
+      _isLoggedIn ? _userName : tr('عميل كار زون', 'CarZone Guest');
+
   // Global helpers so widgets don't need to repeat logic.
   Locale get locale => Locale(_isEnglish ? 'en' : 'ar');
-  TextDirection get direction => _isEnglish ? TextDirection.ltr : TextDirection.rtl;
+  TextDirection get direction =>
+      _isEnglish ? TextDirection.ltr : TextDirection.rtl;
   ThemeMode get themeMode => _isDarkMode ? ThemeMode.dark : ThemeMode.light;
 
   /// Simple translation helper used by all screens.
@@ -25,6 +35,20 @@ class SettingsProvider extends ChangeNotifier {
 
   SettingsProvider() {
     _loadPrefs();
+  }
+
+  // 👤 Auth Methods
+  void setLoggedIn(bool value, [String name = 'ياسر الصلوي']) {
+    _isLoggedIn = value;
+    _userName = name;
+    _saveBool(_loginKey, value);
+    notifyListeners();
+  }
+
+  void logout() {
+    _isLoggedIn = false;
+    _saveBool(_loginKey, false);
+    notifyListeners();
   }
 
   // 🌙 Dark Mode
@@ -54,6 +78,7 @@ class SettingsProvider extends ChangeNotifier {
     final isArabic = deviceLocale.languageCode == 'ar';
     _isDarkMode = prefs.getBool(_darkKey) ?? false;
     _isEnglish = prefs.getBool(_langKey) ?? !isArabic;
+    _isLoggedIn = prefs.getBool(_loginKey) ?? false;
     _loaded = true;
     notifyListeners();
   }

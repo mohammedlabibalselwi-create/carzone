@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
       create: (_) => SettingsProvider(),
       child: Consumer<SettingsProvider>(
         builder: (context, settings, _) {
-
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'CarZone',
@@ -33,7 +32,8 @@ class MyApp extends StatelessWidget {
             // الثيم يعمل الآن بأمان
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
-            themeMode: settings.isLoaded ? settings.themeMode : ThemeMode.system,
+            themeMode:
+                settings.isLoaded ? settings.themeMode : ThemeMode.system,
 
             locale: settings.isLoaded ? settings.locale : const Locale('ar'),
             supportedLocales: const [Locale('en'), Locale('ar')],
@@ -46,7 +46,8 @@ class MyApp extends StatelessWidget {
             // الشاشة الافتراضية صفحة الهوم بيج
             home: settings.isLoaded
                 ? const MainNavigationScreen()
-                : const Scaffold(body: Center(child: CircularProgressIndicator())),
+                : const Scaffold(
+                    body: Center(child: CircularProgressIndicator())),
 
             routes: {
               '/home': (_) => const MainNavigationScreen(),
