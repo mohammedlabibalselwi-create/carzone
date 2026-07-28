@@ -23,7 +23,6 @@ class _UnifiedLoginScreenState extends State<UnifiedLoginScreen>
   final _passwordController = TextEditingController();
 
   bool _isLoading = false;
-  DateTime? _lastCallTime;
   late AnimationController _controller;
   Animation<double>? _fade;
   bool _obscurePassword = true;
@@ -50,19 +49,6 @@ class _UnifiedLoginScreenState extends State<UnifiedLoginScreen>
       _passwordController.clear();
     });
     _controller.forward(from: 0);
-  }
-
-
-
-  void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message, style: GoogleFonts.cairo()),
-        backgroundColor: Colors.redAccent,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    );
   }
 
   void _showSuccess(String message) {

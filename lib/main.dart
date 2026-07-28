@@ -7,6 +7,7 @@ import 'auth/otp_screen.dart';
 import 'auth/reset_password_screen.dart';
 import 'auth/signup_screen.dart';
 import 'auth/unified_login_screen.dart';
+import 'screens/main_navigation_screen.dart';
 import 'providers/settings_provider.dart';
 import 'theme/app_theme.dart';
 
@@ -42,13 +43,13 @@ class MyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
 
-            // الشاشة الافتراضية
+            // الشاشة الافتراضية صفحة الهوم بيج
             home: settings.isLoaded
-                ? const UnifiedLoginScreen()
+                ? const MainNavigationScreen()
                 : const Scaffold(body: Center(child: CircularProgressIndicator())),
 
-            // 👇 أعدنا هنا تعريف المسارات لكي تفتح صفحات إنشاء الحساب ونسيان كلمة المرور 👇
             routes: {
+              '/home': (_) => const MainNavigationScreen(),
               '/login': (_) => const UnifiedLoginScreen(),
               '/signup': (_) => const SignupScreen(),
             },
