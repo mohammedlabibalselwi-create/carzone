@@ -5,6 +5,7 @@ import '../providers/settings_provider.dart';
 import '../theme/app_colors.dart';
 import 'account_screen.dart';
 import 'home_screen.dart';
+import 'price_quotes_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -14,8 +15,9 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  // Index 2 is "الرئيسية" (Home) in the exact center of 5 items
+  // Index 2 is "الرئيسية" (Home) in the center
   int _currentIndex = 2;
+  int _pendingQuotesCount = 3;
 
   String _t(bool isArabic, String ar, String en) => isArabic ? ar : en;
 
@@ -25,15 +27,15 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     final isDark = settings.isDarkMode;
     final isArabic = !settings.isEnglish;
 
-    // 5 pages corresponding to 5 navigation items:
-    // [0]: طلباتي (Orders)
-    // [1]: العروض (Offers)
-    // [2]: الرئيسية (Home - Center)
-    // [3]: خدمة الصيانة (Maintenance)
-    // [4]: حسابي (Account)
     final List<Widget> pages = [
       _buildOrdersPage(isArabic, isDark),
-      _buildOffersPage(isArabic, isDark),
+      PriceQuotesScreen(
+        onPendingCountChanged: (count) {
+          setState(() {
+            _pendingQuotesCount = count;
+          });
+        },
+      ),
       const HomeScreen(),
       _buildMaintenancePage(isArabic, isDark),
       const AccountScreen(),
@@ -173,13 +175,15 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           index: _currentIndex,
           children: pages,
         ),
-        bottomNavigationBar: _buildCustomBottomBar(isArabic, isDark),
+        bottomNavigationBar:
+            _buildCustomBottomBar(isArabic, isDark, _pendingQuotesCount),
       ),
     );
   }
 
-  /// Custom 5-Item Bottom Bar with Centered Home Button
-  Widget _buildCustomBottomBar(bool isArabic, bool isDark) {
+  /// Custom 5-Item Bottom Bar with Centered Home Button and Badges
+  Widget _buildCustomBottomBar(
+      bool isArabic, bool isDark, int pendingQuotesCount) {
     return Container(
       height: 72,
       decoration: BoxDecoration(
@@ -198,7 +202,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          // 1. طلباتي (My Orders) - Right side in RTL
+          // 1. طلباتي (My Orders)
           _buildNavItem(
             index: 0,
             icon: Icons.assignment_outlined,
@@ -207,23 +211,24 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             isDark: isDark,
           ),
 
-          // 2. العروض (Offers) - Right side in RTL
+          // 2. عروض الأسعار (Price Quotes) - With notification counter badge!
           _buildNavItem(
             index: 1,
-            icon: Icons.local_offer_outlined,
-            activeIcon: Icons.local_offer_rounded,
-            label: _t(isArabic, 'العروض', 'Offers'),
+            icon: Icons.request_quote_outlined,
+            activeIcon: Icons.request_quote_rounded,
+            label: _t(isArabic, 'عروض الأسعار', 'Price Quotes'),
             isDark: isDark,
+            badgeCount: pendingQuotesCount,
           ),
 
-          // 3. الرئيسية (Home) - CENTER BUTTON (Highlighted)
+          // 3. الرئيسية (Home) - CENTER BUTTON
           _buildCenterNavItem(
             index: 2,
             label: _t(isArabic, 'الرئيسية', 'Home'),
             isDark: isDark,
           ),
 
-          // 4. خدمة الصيانة (Maintenance) - Left side in RTL
+          // 4. خدمة الصيانة (Maintenance)
           _buildNavItem(
             index: 3,
             icon: Icons.build_circle_outlined,
@@ -232,7 +237,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             isDark: isDark,
           ),
 
-          // 5. حسابي (Account) - Left side in RTL
+          // 5. حسابي (Account)
           _buildNavItem(
             index: 4,
             icon: Icons.person_outline_rounded,
@@ -245,13 +250,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     );
   }
 
-  /// Standard Nav Item
+  /// Standard Nav Item with optional counter badge
   Widget _buildNavItem({
     required int index,
     required IconData icon,
     required IconData activeIcon,
     required String label,
     required bool isDark,
+    int badgeCount = 0,
   }) {
     final isSelected = _currentIndex == index;
     final color = isSelected ? AppPalette.primary : textSecondary(isDark);
@@ -262,10 +268,49 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              isSelected ? activeIcon : icon,
-              color: color,
-              size: 24,
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Icon(
+                  isSelected ? activeIcon : icon,
+                  color: color,
+                  size: 24,
+                ),
+                if (badgeCount > 0)
+                  Positioned(
+                    top: -5,
+                    right: -9,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: AppPalette.danger,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: cardBg(isDark), width: 1.5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppPalette.danger.withOpacity(0.5),
+                            blurRadius: 6,
+                          ),
+                        ],
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 16,
+                        minHeight: 16,
+                      ),
+                      child: Text(
+                        '$badgeCount',
+                        style: GoogleFonts.cairo(
+                          color: Colors.white,
+                          fontSize: 9.5,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+              ],
             ),
             const SizedBox(height: 3),
             Text(
@@ -449,124 +494,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     );
   }
 
-  /// 2. Dummy Offers Page (العروض)
-  Widget _buildOffersPage(bool isArabic, bool isDark) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            _t(isArabic, 'العروض والتخفيضات الحصرية', 'Offers & Discounts'),
-            style: GoogleFonts.cairo(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: textPrimary(isDark),
-            ),
-          ),
-          const SizedBox(height: 12),
-          Expanded(
-            child: ListView.separated(
-              physics: const BouncingScrollPhysics(),
-              itemCount: 3,
-              separatorBuilder: (_, __) => const SizedBox(height: 14),
-              itemBuilder: (context, index) {
-                final offers = [
-                  {
-                    'title': _t(isArabic, 'خصم 30% على فحص الفرامل', '30% Off Brake Check'),
-                    'desc': _t(isArabic, 'عرض حصري شامل فحص الهوب والقماشات', 'Exclusive check package'),
-                    'code': 'BRAKE30',
-                    'icon': Icons.minor_crash_rounded,
-                  },
-                  {
-                    'title': _t(isArabic, 'تغيير الزيت + فلتر مجاناً', 'Oil Change + Free Filter'),
-                    'desc': _t(isArabic, 'عند شرائك زيت كاسترول 10,000 كم', 'With Castrol Oil Purchase'),
-                    'code': 'OILFREE',
-                    'icon': Icons.oil_barrel_rounded,
-                  },
-                  {
-                    'title': _t(isArabic, 'خصم 15% على البطاريات', '15% Off Batteries'),
-                    'desc': _t(isArabic, 'يشمل بطاريات هانكوك وبوش الأصلية', 'Includes Hankook & Bosch'),
-                    'code': 'BATT15',
-                    'icon': Icons.battery_charging_full_rounded,
-                  },
-                ];
-                final offer = offers[index];
-                return Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: cardBg(isDark),
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: cardBorder(isDark)),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: AppPalette.accent.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Icon(
-                          offer['icon'] as IconData,
-                          color: AppPalette.accent,
-                          size: 28,
-                        ),
-                      ),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              offer['title'] as String,
-                              style: GoogleFonts.cairo(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: textPrimary(isDark),
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              offer['desc'] as String,
-                              style: GoogleFonts.cairo(
-                                fontSize: 12,
-                                color: textSecondary(isDark),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: AppPalette.primary.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: AppPalette.primary.withOpacity(0.3),
-                          ),
-                        ),
-                        child: Text(
-                          offer['code'] as String,
-                          style: GoogleFonts.cairo(
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            color: AppPalette.primary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   /// 4. Dummy Maintenance Page (خدمة الصيانة)
   Widget _buildMaintenancePage(bool isArabic, bool isDark) {
     return SingleChildScrollView(
@@ -593,72 +520,76 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             ),
           ),
           const SizedBox(height: 4),
-            Text(
-              _t(isArabic, 'اختر نوع الصيانة المطلوبة لمركبتك',
-                  'Select maintenance type for your vehicle'),
-              style: GoogleFonts.cairo(
-                fontSize: 13,
-                color: textSecondary(isDark),
-              ),
+          Text(
+            _t(isArabic, 'اختر نوع الصيانة المطلوبة لمركبتك',
+                'Select maintenance type for your vehicle'),
+            style: GoogleFonts.cairo(
+              fontSize: 13,
+              color: textSecondary(isDark),
             ),
-            const SizedBox(height: 20),
-
-            _buildServiceOption(
-              icon: Icons.car_repair_rounded,
-              title: _t(isArabic, 'صيانة دورية شاملة', 'Full Periodic Maintenance'),
-              desc: _t(isArabic, 'تغيير فلاتر، فحص سوائل، وفحص المحرك', 'Filters, fluids, & engine check'),
-              isDark: isDark,
-            ),
-            _buildServiceOption(
-              icon: Icons.electrical_services_rounded,
-              title: _t(isArabic, 'صيانة الكهرباء والبرمجة', 'Electrical & Diagnostics'),
-              desc: _t(isArabic, 'فحص الكمبيوتر وحل أعطال الحساسات', 'Computer diagnostic & sensors'),
-              isDark: isDark,
-            ),
-            _buildServiceOption(
-              icon: Icons.tire_repair_rounded,
-              title: _t(isArabic, 'فحص الإطارات والفرامل', 'Tires & Brakes Service'),
-              desc: _t(isArabic, 'ميزان ذرعان، ترصيص، وتغيير قماشات', 'Wheel alignment & brake pads'),
-              isDark: isDark,
-            ),
-            const SizedBox(height: 20),
-
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        _t(isArabic, 'جاري تحضير نموذج الحجز...',
-                            'Preparing booking form...'),
-                        style: GoogleFonts.cairo(),
-                      ),
-                      backgroundColor: AppPalette.primary,
+          ),
+          const SizedBox(height: 20),
+          _buildServiceOption(
+            icon: Icons.car_repair_rounded,
+            title: _t(
+                isArabic, 'صيانة دورية شاملة', 'Full Periodic Maintenance'),
+            desc: _t(isArabic, 'تغيير فلاتر، فحص سوائل، وفحص المحرك',
+                'Filters, fluids, & engine check'),
+            isDark: isDark,
+          ),
+          _buildServiceOption(
+            icon: Icons.electrical_services_rounded,
+            title: _t(isArabic, 'صيانة الكهرباء والبرمجة',
+                'Electrical & Diagnostics'),
+            desc: _t(isArabic, 'فحص الكمبيوتر وحل أعطال الحساسات',
+                'Computer diagnostic & sensors'),
+            isDark: isDark,
+          ),
+          _buildServiceOption(
+            icon: Icons.tire_repair_rounded,
+            title: _t(isArabic, 'فحص الإطارات والفرامل',
+                'Tires & Brakes Service'),
+            desc: _t(isArabic, 'ميزان ذرعان، ترصيص، وتغيير قماشات',
+                'Wheel alignment & brake pads'),
+            isDark: isDark,
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            height: 52,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      _t(isArabic, 'جاري تحضير نموذج الحجز...',
+                          'Preparing booking form...'),
+                      style: GoogleFonts.cairo(),
                     ),
-                  );
-                },
-                icon: const Icon(Icons.calendar_today_rounded, size: 20),
-                label: Text(
-                  _t(isArabic, 'حجز موعد الآن', 'Book Now'),
-                  style: GoogleFonts.cairo(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
+                    backgroundColor: AppPalette.primary,
                   ),
+                );
+              },
+              icon: const Icon(Icons.calendar_today_rounded, size: 20),
+              label: Text(
+                _t(isArabic, 'حجز موعد الآن', 'Book Now'),
+                style: GoogleFonts.cairo(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
                 ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppPalette.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppPalette.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
                 ),
               ),
             ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildServiceOption({
     required IconData icon,
