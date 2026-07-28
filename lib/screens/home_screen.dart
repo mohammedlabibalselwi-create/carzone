@@ -270,16 +270,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Text(
-                          _t(
-                            isArabic,
-                            'سجّل دخولك الآن لتسهيل وتسريع خدماتك',
-                            'Sign in now to simplify & speed up your services',
-                          ),
-                          style: GoogleFonts.cairo(
-                            fontSize: 12.5,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                        Flexible(
+                          child: Text(
+                            _t(
+                              isArabic,
+                              'سجّل دخولك الآن لتسهيل وتسريع خدماتك',
+                              'Sign in to access & speed up services',
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.cairo(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 6),
