@@ -5,6 +5,7 @@ import '../../providers/settings_provider.dart';
 import '../../theme/app_colors.dart';
 import '../widgets/submit_quote_bottom_sheet.dart';
 import 'seller_verification_screen.dart';
+import 'submit_quote_screen.dart';
 
 class SupplierHomeScreen extends StatelessWidget {
   const SupplierHomeScreen({super.key});
@@ -191,23 +192,15 @@ class SupplierHomeScreen extends StatelessWidget {
 
   void _showSubmitQuoteSheet(BuildContext context, Map<String, dynamic> order,
       String Function(String, String) t) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (ctx) => SubmitQuoteBottomSheet(
-        orderTitle: order['part'] as String,
-        onQuoteSubmitted: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                t('تم تقديم العرض بنجاح', 'Quote submitted successfully'),
-                style: GoogleFonts.cairo(),
-              ),
-              backgroundColor: AppPalette.success,
-            ),
-          );
-        },
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => SubmitQuoteScreen(
+          orderId: order['id'] as String,
+          carType: order['carType'] as String,
+          carModel: order['carModel'] as String,
+          partName: order['part'] as String,
+        ),
       ),
     );
   }
@@ -298,13 +291,15 @@ class SupplierHomeScreen extends StatelessWidget {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             Navigator.pop(context);
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              builder: (ctx) => SubmitQuoteBottomSheet(
-                                orderTitle: order['part'] as String,
-                                onQuoteSubmitted: () {},
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => SubmitQuoteScreen(
+                                  orderId: order['id'] as String,
+                                  carType: order['carType'] as String,
+                                  carModel: order['carModel'] as String,
+                                  partName: order['part'] as String,
+                                ),
                               ),
                             );
                           },
@@ -471,7 +466,8 @@ class SupplierHomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppPalette.danger.withOpacity(0.08),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppPalette.danger.withOpacity(0.4), width: 1.2),
+        border:
+            Border.all(color: AppPalette.danger.withOpacity(0.4), width: 1.2),
       ),
       child: Row(
         children: [
@@ -523,8 +519,7 @@ class SupplierHomeScreen extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppPalette.danger,
               foregroundColor: Colors.white,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               elevation: 0,

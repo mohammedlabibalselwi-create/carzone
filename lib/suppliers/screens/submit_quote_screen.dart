@@ -201,15 +201,18 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
                         items: [
                           DropdownMenuItem(
                             value: 'YER',
-                            child: Text('ريال يمني', style: GoogleFonts.cairo(fontSize: 13)),
+                            child: Text('ريال يمني',
+                                style: GoogleFonts.cairo(fontSize: 13)),
                           ),
                           DropdownMenuItem(
                             value: 'SAR',
-                            child: Text('ريال سعودي', style: GoogleFonts.cairo(fontSize: 13)),
+                            child: Text('ريال سعودي',
+                                style: GoogleFonts.cairo(fontSize: 13)),
                           ),
                           DropdownMenuItem(
                             value: 'USD',
-                            child: Text('دولار أمريكي', style: GoogleFonts.cairo(fontSize: 13)),
+                            child: Text('دولار أمريكي',
+                                style: GoogleFonts.cairo(fontSize: 13)),
                           ),
                         ],
                         onChanged: (v) =>
@@ -285,8 +288,7 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
                                       style: GoogleFonts.cairo(fontSize: 13)),
                                 ))
                             .toList(),
-                        onChanged: (v) =>
-                            setState(() => _selectedQuality = v!),
+                        onChanged: (v) => setState(() => _selectedQuality = v!),
                       ),
                     ),
                   ],
@@ -329,7 +331,8 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
                             Container(
                               padding: const EdgeInsets.all(14),
                               decoration: BoxDecoration(
-                                color: AppPalette.primary.withValues(alpha: 0.08),
+                                color:
+                                    AppPalette.primary.withValues(alpha: 0.08),
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
@@ -373,8 +376,8 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
                                 width: 72,
                                 height: 72,
                                 decoration: BoxDecoration(
-                                  color: AppPalette.primary
-                                      .withValues(alpha: 0.1),
+                                  color:
+                                      AppPalette.primary.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(
                                       color: AppPalette.primary
@@ -387,8 +390,8 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
                                 top: 2,
                                 left: 2,
                                 child: GestureDetector(
-                                  onTap: () => setState(() =>
-                                      _attachedImages.removeAt(e.key)),
+                                  onTap: () => setState(
+                                      () => _attachedImages.removeAt(e.key)),
                                   child: Container(
                                     padding: const EdgeInsets.all(2),
                                     decoration: const BoxDecoration(
@@ -500,8 +503,7 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
         borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(color: AppPalette.primary, width: 2),
       ),
-      contentPadding:
-          const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
     );
   }
 
@@ -563,8 +565,8 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
                 ),
                 if (isId)
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                     decoration: BoxDecoration(
                       color: AppPalette.primary,
                       borderRadius: BorderRadius.circular(8),
@@ -583,9 +585,8 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
                     value,
                     style: GoogleFonts.cairo(
                       fontSize: 14,
-                      fontWeight: isHighlighted
-                          ? FontWeight.bold
-                          : FontWeight.w600,
+                      fontWeight:
+                          isHighlighted ? FontWeight.bold : FontWeight.w600,
                       color: isHighlighted
                           ? AppPalette.accent
                           : AppPalette.primary,
@@ -632,8 +633,8 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
         builder: (ctx) => Directionality(
           textDirection: TextDirection.rtl,
           child: AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             icon: Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
@@ -668,4 +669,3 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
     }
   }
 }
-

@@ -43,6 +43,7 @@ class _SupplierMainNavigationScreenState extends State<SupplierMainNavigationScr
           backgroundColor: AppPalette.primary,
           elevation: 0,
           centerTitle: false,
+          automaticallyImplyLeading: false,
           title: Row(
             children: [
               Container(
