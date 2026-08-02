@@ -41,12 +41,10 @@ class _SupplierAccountScreenState extends State<SupplierAccountScreen> {
                 ),
               ),
             ),
-            
             _buildProfileHeaderCard(isArabic, isDark, settings),
             const SizedBox(height: 16),
             _buildUserStatsRow(isArabic, isDark),
             const SizedBox(height: 24),
-            
             _buildSectionHeader(
               title: _t(isArabic, 'إدارة المحفظة المالية', 'Wallet Management'),
               isDark: isDark,
@@ -54,9 +52,9 @@ class _SupplierAccountScreenState extends State<SupplierAccountScreen> {
             const SizedBox(height: 10),
             _buildWalletCard(isArabic, isDark),
             const SizedBox(height: 24),
-
             _buildSectionHeader(
-              title: _t(isArabic, 'الإعدادات والتفضيلات', 'Settings & Preferences'),
+              title: _t(
+                  isArabic, 'الإعدادات والتفضيلات', 'Settings & Preferences'),
               isDark: isDark,
             ),
             _buildMenuGroup(
@@ -64,8 +62,12 @@ class _SupplierAccountScreenState extends State<SupplierAccountScreen> {
               items: [
                 _buildMenuItem(
                   icon: Icons.verified_user_outlined,
-                  title: _t(isArabic, 'توثيق حساب البائع التجاري', 'Seller Verification'),
-                  subtitle: _t(isArabic, 'إدخال السجل التجاري والبيانات البنكية', 'CR & Settlement Details'),
+                  title: _t(isArabic, 'توثيق حساب البائع التجاري',
+                      'Seller Verification'),
+                  subtitle: _t(
+                      isArabic,
+                      'إدخال السجل التجاري والبيانات البنكية',
+                      'CR & Settlement Details'),
                   isDark: isDark,
                   onTap: () {
                     Navigator.push(
@@ -78,14 +80,16 @@ class _SupplierAccountScreenState extends State<SupplierAccountScreen> {
                 _buildMenuItem(
                   icon: Icons.notifications_outlined,
                   title: _t(isArabic, 'إشعارات التطبيق', 'App Notifications'),
-                  subtitle: _t(isArabic, 'تفعيل أو تعطيل التنبيهات', 'Enable or disable alerts'),
+                  subtitle: _t(isArabic, 'تفعيل أو تعطيل التنبيهات',
+                      'Enable or disable alerts'),
                   isDark: isDark,
                   onTap: () {},
                 ),
                 _buildMenuItem(
                   icon: Icons.lock_outline_rounded,
                   title: _t(isArabic, 'تغيير كلمة المرور', 'Change Password'),
-                  subtitle: _t(isArabic, 'تحديث بيانات الدخول', 'Update login info'),
+                  subtitle:
+                      _t(isArabic, 'تحديث بيانات الدخول', 'Update login info'),
                   isDark: isDark,
                   onTap: () {},
                 ),
@@ -99,18 +103,19 @@ class _SupplierAccountScreenState extends State<SupplierAccountScreen> {
                 ),
               ],
             ),
-            
             const SizedBox(height: 24),
-            
             SizedBox(
               width: double.infinity,
               height: 50,
               child: OutlinedButton.icon(
                 onPressed: () {
-                    Navigator.pushReplacement(
-                        context, MaterialPageRoute(builder: (c) => const UnifiedLoginScreen()));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (c) => const UnifiedLoginScreen()));
                 },
-                icon: const Icon(Icons.logout_rounded, color: AppPalette.danger, size: 20),
+                icon: const Icon(Icons.logout_rounded,
+                    color: AppPalette.danger, size: 20),
                 label: Text(
                   _t(isArabic, 'تسجيل الخروج', 'Sign Out'),
                   style: GoogleFonts.cairo(
@@ -134,7 +139,8 @@ class _SupplierAccountScreenState extends State<SupplierAccountScreen> {
     );
   }
 
-  Widget _buildProfileHeaderCard(bool isArabic, bool isDark, SettingsProvider settings) {
+  Widget _buildProfileHeaderCard(
+      bool isArabic, bool isDark, SettingsProvider settings) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -197,7 +203,8 @@ class _SupplierAccountScreenState extends State<SupplierAccountScreen> {
                       children: [
                         Expanded(
                           child: Text(
-                            _t(isArabic, 'مؤسسة الخالد لقطع الغيار', 'Al-Khaled Auto Parts'),
+                            _t(isArabic, 'مؤسسة الخالد لقطع الغيار',
+                                'Al-Khaled Auto Parts'),
                             style: GoogleFonts.cairo(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -215,7 +222,8 @@ class _SupplierAccountScreenState extends State<SupplierAccountScreen> {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      _t(isArabic, 'مورد موثق (الرياض)', 'Verified Supplier (Riyadh)'),
+                      _t(isArabic, 'مورد موثق (الرياض)',
+                          'Verified Supplier (Riyadh)'),
                       style: GoogleFonts.cairo(
                         fontSize: 13,
                         color: Colors.white70,
@@ -363,7 +371,8 @@ class _SupplierAccountScreenState extends State<SupplierAccountScreen> {
                   color: AppPalette.primary.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.account_balance_wallet_rounded, color: AppPalette.primary),
+                child: const Icon(Icons.account_balance_wallet_rounded,
+                    color: AppPalette.primary),
               ),
               const SizedBox(width: 12),
               Column(
@@ -371,7 +380,8 @@ class _SupplierAccountScreenState extends State<SupplierAccountScreen> {
                 children: [
                   Text(
                     _t(isArabic, 'الرصيد المتاح', 'Available Balance'),
-                    style: GoogleFonts.cairo(color: textSecondary(isDark), fontSize: 13),
+                    style: GoogleFonts.cairo(
+                        color: textSecondary(isDark), fontSize: 13),
                   ),
                   Text(
                     '12,450 ر.س',
@@ -394,12 +404,14 @@ class _SupplierAccountScreenState extends State<SupplierAccountScreen> {
               icon: const Icon(Icons.money_rounded, size: 20),
               label: Text(
                 _t(isArabic, 'سحب الأرباح', 'Withdraw'),
-                style: GoogleFonts.cairo(fontSize: 15, fontWeight: FontWeight.bold),
+                style: GoogleFonts.cairo(
+                    fontSize: 15, fontWeight: FontWeight.bold),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppPalette.accent,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
                 elevation: 0,
               ),
             ),

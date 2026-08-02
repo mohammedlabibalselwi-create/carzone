@@ -27,12 +27,12 @@ class _SupplierMainNavigationScreenState extends State<SupplierMainNavigationScr
     final isDark = settings.isDarkMode;
     final isArabic = !settings.isEnglish;
 
-    final List<Widget> pages = const [
-      SupplierNewOrdersScreen(),
-      SupplierMyOffersScreen(),
+    final List<Widget> pages = [
+      const SupplierNewOrdersScreen(),
+      const SupplierMyOffersScreen(),
       SupplierHomeScreen(),
-      SupplierStatisticsScreen(),
-      SupplierAccountScreen(),
+      const SupplierStatisticsScreen(),
+      const SupplierAccountScreen(),
     ];
 
     return Directionality(

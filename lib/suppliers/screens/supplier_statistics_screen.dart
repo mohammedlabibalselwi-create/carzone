@@ -5,7 +5,8 @@ class SupplierStatisticsScreen extends StatefulWidget {
   const SupplierStatisticsScreen({super.key});
 
   @override
-  State<SupplierStatisticsScreen> createState() => _SupplierStatisticsScreenState();
+  State<SupplierStatisticsScreen> createState() =>
+      _SupplierStatisticsScreenState();
 }
 
 class _SupplierStatisticsScreenState extends State<SupplierStatisticsScreen> {
@@ -61,9 +62,15 @@ class _SupplierStatisticsScreenState extends State<SupplierStatisticsScreen> {
         fillColor: AppPalette.primary,
         color: AppPalette.primary,
         children: const [
-          Padding(padding: EdgeInsets.symmetric(horizontal: 20), child: Text('يومية')),
-          Padding(padding: EdgeInsets.symmetric(horizontal: 20), child: Text('أسبوعية')),
-          Padding(padding: EdgeInsets.symmetric(horizontal: 20), child: Text('شهرية')),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Text('يومية')),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Text('أسبوعية')),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Text('شهرية')),
         ],
       ),
     );
@@ -170,7 +177,8 @@ class _SupplierStatisticsScreenState extends State<SupplierStatisticsScreen> {
             backgroundColor: AppPalette.badgeBg,
             child: Text(
               '${index + 1}',
-              style: const TextStyle(color: AppPalette.primary, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  color: AppPalette.primary, fontWeight: FontWeight.bold),
             ),
           ),
           title: Text(topProducts[index]),

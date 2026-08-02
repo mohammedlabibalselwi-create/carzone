@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/settings_provider.dart';
 import '../../theme/app_colors.dart';
-import '../widgets/submit_quote_bottom_sheet.dart';
 import 'seller_verification_screen.dart';
 import 'submit_quote_screen.dart';
 
@@ -112,7 +111,7 @@ class SupplierHomeScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: background(isDark),
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
@@ -250,26 +249,28 @@ class SupplierHomeScreen extends StatelessWidget {
                                 color: AppPalette.primary, size: 24),
                           ),
                           const SizedBox(width: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'تفاصيل الطلب',
-                                style: GoogleFonts.cairo(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: textPrimary(isDark),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'تفاصيل الطلب',
+                                  style: GoogleFonts.cairo(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: textPrimary(isDark),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                order['id'] as String,
-                                style: GoogleFonts.cairo(
-                                  fontSize: 13,
-                                  color: AppPalette.primary,
-                                  fontWeight: FontWeight.bold,
+                                Text(
+                                  order['id'] as String,
+                                  style: GoogleFonts.cairo(
+                                    fontSize: 13,
+                                    color: AppPalette.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -461,73 +462,54 @@ class SupplierHomeScreen extends StatelessWidget {
   Widget _buildVerificationNoticeBanner(
       BuildContext context, bool isDark, String Function(String, String) t) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: AppPalette.danger.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(20),
-        border:
-            Border.all(color: AppPalette.danger.withOpacity(0.4), width: 1.2),
+        color: AppPalette.danger.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppPalette.danger.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppPalette.danger.withOpacity(0.15),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.warning_amber_rounded,
-                color: AppPalette.danger, size: 24),
-          ),
-          const SizedBox(width: 12),
+          const Icon(Icons.warning_amber_rounded,
+              color: AppPalette.danger, size: 22),
+          const SizedBox(width: 10),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  t('تنبيه: حسابك البائع غير موثّق بعد!',
-                      'Notice: Seller account unverified!'),
-                  style: GoogleFonts.cairo(
-                    fontSize: 13.5,
-                    fontWeight: FontWeight.bold,
-                    color: AppPalette.danger,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  t('قم بإكمال بيانات التوثيق والسجل التجاري لتتمكن من إرسال عروض الأسعار.',
-                      'Complete verification to submit price quotes.'),
-                  style: GoogleFonts.cairo(
-                    fontSize: 11.5,
-                    color: textSecondary(isDark),
-                    height: 1.3,
-                  ),
-                ),
-              ],
+            child: Text(
+              t('حسابك غير موثّق بعد. يرجى إكمال التوثيق.',
+                  'Seller account unverified. Please complete verification.'),
+              style: GoogleFonts.cairo(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: AppPalette.danger,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           const SizedBox(width: 8),
-          ElevatedButton(
-            onPressed: () {
+          GestureDetector(
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (_) => const SellerVerificationScreen()),
               );
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppPalette.danger,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              elevation: 0,
-            ),
-            child: Text(
-              t('توثيق الآن', 'Verify Now'),
-              style: GoogleFonts.cairo(
-                  fontSize: 11.5, fontWeight: FontWeight.bold),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppPalette.danger,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                t('توثيق', 'Verify'),
+                style: GoogleFonts.cairo(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ],

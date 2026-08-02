@@ -120,7 +120,8 @@ class _SupplierMyOffersScreenState extends State<SupplierMyOffersScreen>
             color: cardBg(isDark),
             child: TabBar(
               controller: _tabController,
-              labelStyle: GoogleFonts.cairo(fontWeight: FontWeight.bold, fontSize: 13),
+              labelStyle:
+                  GoogleFonts.cairo(fontWeight: FontWeight.bold, fontSize: 13),
               unselectedLabelStyle: GoogleFonts.cairo(fontSize: 12),
               labelColor: AppPalette.primary,
               unselectedLabelColor: textSecondary(isDark),
@@ -203,11 +204,13 @@ class _SupplierMyOffersScreenState extends State<SupplierMyOffersScreen>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.inbox_rounded, size: 64, color: textSecondary(isDark).withValues(alpha: 0.4)),
+            Icon(Icons.inbox_rounded,
+                size: 64, color: textSecondary(isDark).withValues(alpha: 0.4)),
             const SizedBox(height: 14),
             Text(
               'لا توجد عروض في هذا القسم',
-              style: GoogleFonts.cairo(color: textSecondary(isDark), fontSize: 15),
+              style:
+                  GoogleFonts.cairo(color: textSecondary(isDark), fontSize: 15),
             ),
           ],
         ),
@@ -323,7 +326,8 @@ class _OfferCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
               color: _statusColor.withValues(alpha: 0.06),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(20)),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -331,7 +335,8 @@ class _OfferCard extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 9, vertical: 3),
                       decoration: BoxDecoration(
                         color: AppPalette.primary,
                         borderRadius: BorderRadius.circular(8),
@@ -348,11 +353,13 @@ class _OfferCard extends StatelessWidget {
                     const SizedBox(width: 8),
                     // Status Badge
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 3),
                       decoration: BoxDecoration(
                         color: _statusColor.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: _statusColor.withValues(alpha: 0.5)),
+                        border: Border.all(
+                            color: _statusColor.withValues(alpha: 0.5)),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -410,7 +417,8 @@ class _OfferCard extends StatelessWidget {
                   children: [
                     _InfoChip(
                       icon: Icons.attach_money_rounded,
-                      label: '${(offer['price'] as double).toStringAsFixed(0)} ر.س',
+                      label:
+                          '${(offer['price'] as double).toStringAsFixed(0)} ر.س',
                       color: AppPalette.primary,
                       isDark: isDark,
                     ),
@@ -434,13 +442,15 @@ class _OfferCard extends StatelessWidget {
                       icon: const Icon(Icons.edit_rounded, size: 16),
                       label: Text(
                         'تعديل العرض',
-                        style: GoogleFonts.cairo(fontSize: 13, fontWeight: FontWeight.bold),
+                        style: GoogleFonts.cairo(
+                            fontSize: 13, fontWeight: FontWeight.bold),
                       ),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.orange,
                         side: const BorderSide(color: Colors.orange),
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
                       ),
                     ),
                   ),
