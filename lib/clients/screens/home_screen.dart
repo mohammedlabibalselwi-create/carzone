@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+<<<<<<< HEAD:lib/screens/home_screen.dart
 import '../auth/unified_login_screen.dart';
 import '../providers/settings_provider.dart';
 import '../theme/app_colors.dart';
 import '../theme/responsive_layout.dart';
+=======
+import '../../auth/unified_login_screen.dart';
+import '../../providers/settings_provider.dart';
+import '../../theme/app_colors.dart';
+>>>>>>> e9b854e6ab6f6c1a4eb2043d70c206cfdefa25f1:lib/clients/screens/home_screen.dart
 import 'create_custom_part_request_screen.dart';
 
 class HomeScreen extends StatefulWidget {

@@ -7,7 +7,7 @@ import 'auth/otp_screen.dart';
 import 'auth/reset_password_screen.dart';
 import 'auth/signup_screen.dart';
 import 'auth/unified_login_screen.dart';
-import 'screens/main_navigation_screen.dart';
+import 'clients/screens/main_navigation_screen.dart';
 import 'providers/settings_provider.dart';
 import 'theme/app_theme.dart';
 

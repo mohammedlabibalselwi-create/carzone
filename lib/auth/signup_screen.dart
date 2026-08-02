@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../providers/settings_provider.dart';
 import '../theme/app_colors.dart';
 import 'unified_login_screen.dart';
+import '../suppliers/screens/supplier_main_navigation_screen.dart';
 
 // --- دوال المساعدة ---
 String t(bool isArabic, String ar, String en) => isArabic ? ar : en;
@@ -167,20 +168,20 @@ class _SignupScreenState extends State<SignupScreen>
   }
 
   void _handleSubmit(bool isArabic) {
+    if (_selectedRole == SignupRole.seller) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SupplierMainNavigationScreen(),
+        ),
+      );
+      return;
+    }
+
     if (!_formKey.currentState!.validate()) {
       _showMessage(
           t(isArabic, 'يرجى إكمال الحقول المطلوبة بشكل صحيح',
               'Please complete all required fields correctly'),
-          isError: true,
-          isArabic: isArabic);
-      return;
-    }
-
-    if (_selectedRole == SignupRole.seller &&
-        (_selectedDocument == null || _selectedDocument!.isEmpty)) {
-      _showMessage(
-          t(isArabic, 'يرجى إرفاق المستند المطلوب',
-              'Please attach the required document'),
           isError: true,
           isArabic: isArabic);
       return;
@@ -192,8 +193,7 @@ class _SignupScreenState extends State<SignupScreen>
       if (!mounted) return;
       setState(() => _isLoading = false);
       _showMessage(
-          t(isArabic, 'تم تسجيل الحساب التجاري بنجاح!',
-              'Merchant account created successfully!'),
+          t(isArabic, 'تم التسجيل بنجاح!', 'Account created successfully!'),
           isArabic: isArabic);
     });
   }
