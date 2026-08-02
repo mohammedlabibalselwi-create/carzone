@@ -168,17 +168,7 @@ class _SignupScreenState extends State<SignupScreen>
   }
 
   void _handleSubmit(bool isArabic) {
-    if (_selectedRole == SignupRole.seller) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const SupplierMainNavigationScreen(),
-        ),
-      );
-      return;
-    }
-
-    if (!_formKey.currentState!.validate()) {
+    if (_formKey.currentState != null && !_formKey.currentState!.validate()) {
       _showMessage(
           t(isArabic, 'يرجى إكمال الحقول المطلوبة بشكل صحيح',
               'Please complete all required fields correctly'),
@@ -189,12 +179,16 @@ class _SignupScreenState extends State<SignupScreen>
 
     setState(() => _isLoading = true);
 
-    Future.delayed(const Duration(milliseconds: 1500), () {
+    Future.delayed(const Duration(milliseconds: 800), () {
       if (!mounted) return;
       setState(() => _isLoading = false);
-      _showMessage(
-          t(isArabic, 'تم التسجيل بنجاح!', 'Account created successfully!'),
-          isArabic: isArabic);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SupplierMainNavigationScreen(),
+        ),
+      );
     });
   }
 
@@ -329,8 +323,8 @@ class _SignupScreenState extends State<SignupScreen>
             const SizedBox(height: 18),
             CustomInputField(
               controller: _storeNameController,
-              label: t(isArabic, 'اسم المحل / المركز التجاري',
-                  'Store / Merchant Name'),
+              label: t(
+                  isArabic, 'اسم المحل / اسم البائع', 'Store / Merchant Name'),
               icon: Icons.storefront_outlined,
               isDark: isDark,
               isArabic: isArabic,
@@ -341,142 +335,19 @@ class _SignupScreenState extends State<SignupScreen>
             const SizedBox(height: 16),
             CustomInputField(
               controller: _emailController,
-              label: t(isArabic, 'البريد الإلكتروني', 'Email'),
-              icon: Icons.alternate_email,
+              label: t(isArabic, 'البريد الإلكتروني أو رقم الهاتف',
+                  'Email or Phone Number'),
+              icon: Icons.contact_mail_outlined,
               type: TextInputType.emailAddress,
               isDark: isDark,
               isArabic: isArabic,
               validator: (value) {
-                if (value == null || value.trim().isEmpty)
+                if (value == null || value.trim().isEmpty) {
                   return t(
-                      isArabic, 'البريد الإلكتروني مطلوب', 'Email is required');
-                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                    .hasMatch(value)) {
-                  return t(isArabic, 'صيغة البريد الإلكتروني غير صحيحة',
-                      'Invalid email format');
+                      isArabic, 'هذا الحقل مطلوب', 'This field is required');
                 }
                 return null;
               },
-            ),
-            const SizedBox(height: 16),
-            CustomInputField(
-              controller: _phoneController,
-              label: t(isArabic, 'رقم الهاتف', 'Phone'),
-              icon: Icons.phone_android,
-              type: TextInputType.phone,
-              isDark: isDark,
-              isArabic: isArabic,
-              validator: (value) => value == null || value.trim().isEmpty
-                  ? t(isArabic, 'رقم الهاتف مطلوب', 'Phone is required')
-                  : null,
-            ),
-            const SizedBox(height: 16),
-            _buildMapPickerButton(isArabic, isDark),
-            const SizedBox(height: 16),
-            CustomInputField(
-              controller: _cityController,
-              label: t(
-                  isArabic, 'المدينة (اضغط للاختيار)', 'City (Tap to choose)'),
-              icon: Icons.location_city,
-              readOnly: true,
-              onTap: () => _openCityPickerSheet(isArabic, isDark),
-              suffixIcon: const Icon(Icons.arrow_drop_down_circle_outlined,
-                  color: AppPalette.primary),
-              isDark: isDark,
-              isArabic: isArabic,
-              validator: (value) => value == null || value.trim().isEmpty
-                  ? t(isArabic, 'المدينة مطلوبة للبائعين',
-                      'City is required for sellers')
-                  : null,
-            ),
-            const SizedBox(height: 16),
-            CustomInputField(
-              controller: _districtController,
-              label: t(isArabic, 'الحي / المنطقة', 'District / Area'),
-              icon: Icons.location_on_outlined,
-              isDark: isDark,
-              isArabic: isArabic,
-              validator: (value) => value == null || value.trim().isEmpty
-                  ? t(isArabic, 'الحي مطلوب للبائعين',
-                      'District is required for sellers')
-                  : null,
-            ),
-            const SizedBox(height: 16),
-            CustomInputField(
-              controller: _streetController,
-              label: t(isArabic, 'الشارع / العنوان بالتفصيل', 'Street Address'),
-              icon: Icons.signpost_outlined,
-              isDark: isDark,
-              isArabic: isArabic,
-              validator: (value) => value == null || value.trim().isEmpty
-                  ? t(isArabic, 'الشارع مطلوب للبائعين',
-                      'Street is required for sellers')
-                  : null,
-            ),
-            const SizedBox(height: 16),
-            FormField<PartsType>(
-              initialValue: _partsType,
-              validator: (value) => value == null
-                  ? t(isArabic, 'يرجى اختيار نوع القطع',
-                      'Please choose parts type')
-                  : null,
-              builder: (fieldState) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      t(isArabic, 'نوع القطع', 'Parts type'),
-                      style: ts(isArabic,
-                          size: 13.5,
-                          weight: FontWeight.w700,
-                          color: textPrimary(isDark)),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        _partsTypeChip(
-                          label: t(isArabic, 'جديد', 'New'),
-                          selected: _partsType == PartsType.newParts,
-                          isDark: isDark,
-                          isArabic: isArabic,
-                          onTap: () {
-                            setState(() => _partsType = PartsType.newParts);
-                            fieldState.didChange(PartsType.newParts);
-                          },
-                        ),
-                        const SizedBox(width: 10),
-                        _partsTypeChip(
-                          label: t(isArabic, 'تشليح', 'Scrapy'),
-                          selected: _partsType == PartsType.scrapy,
-                          isDark: isDark,
-                          isArabic: isArabic,
-                          onTap: () {
-                            setState(() => _partsType = PartsType.scrapy);
-                            fieldState.didChange(PartsType.scrapy);
-                          },
-                        ),
-                      ],
-                    ),
-                    if (fieldState.hasError)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 6),
-                        child: Text(
-                          fieldState.errorText!,
-                          style:
-                              ts(isArabic, size: 12, color: Colors.redAccent),
-                        ),
-                      ),
-                  ],
-                );
-              },
-            ),
-            const SizedBox(height: 16),
-            UploadDocumentTile(
-              isArabic: isArabic,
-              isDark: isDark,
-              selectedDocument: _selectedDocument,
-              onTap: () => setState(
-                  () => _selectedDocument = "Commercial_Register_01.pdf"),
             ),
             const SizedBox(height: 16),
             CustomInputField(
@@ -487,18 +358,54 @@ class _SignupScreenState extends State<SignupScreen>
               isDark: isDark,
               isArabic: isArabic,
               validator: (value) {
-                if (value == null || value.isEmpty)
+                if (value == null || value.isEmpty) {
                   return t(
                       isArabic, 'كلمة المرور مطلوبة', 'Password is required');
-                if (value.length < 6)
+                }
+                if (value.length < 6) {
                   return t(isArabic, 'كلمة المرور يجب أن تكون 6 أحرف على الأقل',
                       'Password must be at least 6 characters');
+                }
                 return null;
               },
             ),
-            const SizedBox(height: 28),
+            const SizedBox(height: 16),
+
+            // Verification Note Card
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppPalette.primary.withOpacity(0.08),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: AppPalette.primary.withOpacity(0.2)),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.info_outline_rounded,
+                      color: AppPalette.primary, size: 20),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      t(
+                        isArabic,
+                        'تنويه: ستتمكن من إكمال توثيق السجل التجاري والبيانات البنكية من داخل حسابك بعد التسجيل مباشرة.',
+                        'Note: You can complete commercial register verification inside your account dashboard after signup.',
+                      ),
+                      style: ts(isArabic,
+                          size: 11.5,
+                          color: textSecondary(isDark),
+                          height: 1.4),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 22),
             _buildSubmitButton(isArabic, isDark),
-            const SizedBox(height: 12),
+            const SizedBox(height: 18),
+            _buildSocialSignupSection(isArabic, isDark),
+            const SizedBox(height: 16),
             TextButton(
               onPressed: () => Navigator.push(
                 context,
@@ -1069,6 +976,72 @@ class _SignupScreenState extends State<SignupScreen>
                 style: ts(isArabic,
                     size: 16, weight: FontWeight.bold, color: Colors.white)),
       ),
+    );
+  }
+
+  Widget _buildSocialSignupSection(bool isArabic, bool isDark) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            const Expanded(child: Divider()),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Text(
+                t(isArabic, 'أو سجّل بواسطة', 'Or sign up with'),
+                style: ts(isArabic, size: 12.5, color: textSecondary(isDark)),
+              ),
+            ),
+            const Expanded(child: Divider()),
+          ],
+        ),
+        const SizedBox(height: 14),
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: () {},
+                icon: Text('G', style: GoogleFonts.cairo(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red)),
+                label: Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      t(isArabic, 'جوجل', 'Google'),
+                      style: ts(isArabic, size: 14, weight: FontWeight.w600, color: textPrimary(isDark)),
+                    ),
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  side: BorderSide(color: cardBorder(isDark)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.apple_rounded, size: 22, color: Colors.grey),
+                label: Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      t(isArabic, 'آبل', 'Apple'),
+                      style: ts(isArabic, size: 14, weight: FontWeight.w600, color: textPrimary(isDark)),
+                    ),
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  side: BorderSide(color: cardBorder(isDark)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 

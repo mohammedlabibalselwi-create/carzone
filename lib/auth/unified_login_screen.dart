@@ -379,13 +379,20 @@ class _UnifiedLoginScreenState extends State<UnifiedLoginScreen>
                                                 const CustomGoogleIcon(
                                                     size: 20),
                                                 const SizedBox(width: 8),
-                                                Text(
-                                                  _t(isArabic, 'جوجل',
-                                                      'Google'),
-                                                  style: GoogleFonts.cairo(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: textPrimary(isDark),
+                                                Flexible(
+                                                  child: FittedBox(
+                                                    fit: BoxFit.scaleDown,
+                                                    child: Text(
+                                                      _t(isArabic, 'جوجل',
+                                                          'Google'),
+                                                      style: GoogleFonts.cairo(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            textPrimary(isDark),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                               ],
@@ -429,12 +436,19 @@ class _UnifiedLoginScreenState extends State<UnifiedLoginScreen>
                                                       : Colors.black87,
                                                 ),
                                                 const SizedBox(width: 6),
-                                                Text(
-                                                  _t(isArabic, 'أبل', 'Apple'),
-                                                  style: GoogleFonts.cairo(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: textPrimary(isDark),
+                                                Flexible(
+                                                  child: FittedBox(
+                                                    fit: BoxFit.scaleDown,
+                                                    child: Text(
+                                                      _t(isArabic, 'أبل', 'Apple'),
+                                                      style: GoogleFonts.cairo(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            textPrimary(isDark),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                               ],

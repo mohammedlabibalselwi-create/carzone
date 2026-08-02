@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../providers/settings_provider.dart';
 import '../../theme/app_colors.dart';
 import '../widgets/submit_quote_bottom_sheet.dart';
+import 'seller_verification_screen.dart';
 
 class SupplierHomeScreen extends StatelessWidget {
   const SupplierHomeScreen({super.key});
@@ -116,6 +117,10 @@ class SupplierHomeScreen extends StatelessWidget {
         slivers: [
           // ─── Welcome Banner ───
           SliverToBoxAdapter(child: _buildWelcomeBanner(isDark, t)),
+
+          // ─── Verification Notice Banner ───
+          SliverToBoxAdapter(
+              child: _buildVerificationNoticeBanner(context, isDark, t)),
 
           // ─── Section Header ───
           SliverToBoxAdapter(
@@ -451,6 +456,83 @@ class SupplierHomeScreen extends StatelessWidget {
                 ),
                 const Icon(Icons.trending_up_rounded, color: AppPalette.accent),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildVerificationNoticeBanner(
+      BuildContext context, bool isDark, String Function(String, String) t) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppPalette.danger.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppPalette.danger.withOpacity(0.4), width: 1.2),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppPalette.danger.withOpacity(0.15),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.warning_amber_rounded,
+                color: AppPalette.danger, size: 24),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  t('تنبيه: حسابك البائع غير موثّق بعد!',
+                      'Notice: Seller account unverified!'),
+                  style: GoogleFonts.cairo(
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.bold,
+                    color: AppPalette.danger,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  t('قم بإكمال بيانات التوثيق والسجل التجاري لتتمكن من إرسال عروض الأسعار.',
+                      'Complete verification to submit price quotes.'),
+                  style: GoogleFonts.cairo(
+                    fontSize: 11.5,
+                    color: textSecondary(isDark),
+                    height: 1.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => const SellerVerificationScreen()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppPalette.danger,
+              foregroundColor: Colors.white,
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              elevation: 0,
+            ),
+            child: Text(
+              t('توثيق الآن', 'Verify Now'),
+              style: GoogleFonts.cairo(
+                  fontSize: 11.5, fontWeight: FontWeight.bold),
             ),
           ),
         ],

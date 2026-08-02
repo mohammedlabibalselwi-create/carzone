@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../providers/settings_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../auth/unified_login_screen.dart';
+import 'seller_verification_screen.dart';
 
 class SupplierAccountScreen extends StatefulWidget {
   const SupplierAccountScreen({super.key});
@@ -58,10 +59,22 @@ class _SupplierAccountScreenState extends State<SupplierAccountScreen> {
               title: _t(isArabic, 'الإعدادات والتفضيلات', 'Settings & Preferences'),
               isDark: isDark,
             ),
-            const SizedBox(height: 10),
             _buildMenuGroup(
               isDark: isDark,
               items: [
+                _buildMenuItem(
+                  icon: Icons.verified_user_outlined,
+                  title: _t(isArabic, 'توثيق حساب البائع التجاري', 'Seller Verification'),
+                  subtitle: _t(isArabic, 'إدخال السجل التجاري والبيانات البنكية', 'CR & Settlement Details'),
+                  isDark: isDark,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const SellerVerificationScreen()),
+                    );
+                  },
+                ),
                 _buildMenuItem(
                   icon: Icons.notifications_outlined,
                   title: _t(isArabic, 'إشعارات التطبيق', 'App Notifications'),
