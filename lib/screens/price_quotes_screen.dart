@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../providers/settings_provider.dart';
 import '../theme/app_colors.dart';
 
+import '../theme/responsive_layout.dart';
+
 class PriceQuotesScreen extends StatefulWidget {
   final Function(int count)? onPendingCountChanged;
 
@@ -78,82 +80,82 @@ class _PriceQuotesScreenState extends State<PriceQuotesScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _t(isArabic, 'عروض الأسعار الواردة',
-                          'Received Price Quotes'),
-                      style: GoogleFonts.cairo(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: textPrimary(isDark),
-                      ),
-                    ),
-                    Text(
-                      _t(
-                        isArabic,
-                        'العروض المقدمة لطلباتك من محلات وشركاء التطبيق',
-                        'Price quotes sent by merchants for your requests',
-                      ),
-                      style: GoogleFonts.cairo(
-                        fontSize: 12.5,
-                        color: textSecondary(isDark),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              if (pendingQuotes.isNotEmpty)
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: AppPalette.primary.withOpacity(0.12),
-                    borderRadius: BorderRadius.circular(16),
-                    border:
-                        Border.all(color: AppPalette.primary.withOpacity(0.3)),
-                  ),
-                  child: Row(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.request_quote_rounded,
-                          size: 16, color: AppPalette.primary),
-                      const SizedBox(width: 6),
                       Text(
-                        _t(isArabic, '${pendingQuotes.length} عروض',
-                            '${pendingQuotes.length} Quotes'),
+                        _t(isArabic, 'عروض الأسعار الواردة',
+                            'Received Price Quotes'),
                         style: GoogleFonts.cairo(
-                          fontSize: 12,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: AppPalette.primary,
+                          color: textPrimary(isDark),
+                        ),
+                      ),
+                      Text(
+                        _t(
+                          isArabic,
+                          'العروض المقدمة لطلباتك من محلات وشركاء التطبيق',
+                          'Price quotes sent by merchants for your requests',
+                        ),
+                        style: GoogleFonts.cairo(
+                          fontSize: 12.5,
+                          color: textSecondary(isDark),
                         ),
                       ),
                     ],
                   ),
                 ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: pendingQuotes.isEmpty
-                ? _buildEmptyQuotesView(isArabic, isDark)
-                : ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: pendingQuotes.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 16),
-                    itemBuilder: (context, index) {
-                      final quote = pendingQuotes[index];
-                      return _buildQuoteCard(quote, isArabic, isDark);
-                    },
+                if (pendingQuotes.isNotEmpty)
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: AppPalette.primary.withOpacity(0.12),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                          color: AppPalette.primary.withOpacity(0.3)),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.request_quote_rounded,
+                            size: 16, color: AppPalette.primary),
+                        const SizedBox(width: 6),
+                        Text(
+                          _t(isArabic, '${pendingQuotes.length} عروض',
+                              '${pendingQuotes.length} Quotes'),
+                          style: GoogleFonts.cairo(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: AppPalette.primary,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-          ),
-        ],
-      ),
-    );
+              ],
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: pendingQuotes.isEmpty
+                  ? _buildEmptyQuotesView(isArabic, isDark)
+                  : ListView.separated(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: pendingQuotes.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 16),
+                      itemBuilder: (context, index) {
+                        final quote = pendingQuotes[index];
+                        return _buildQuoteCard(quote, isArabic, isDark);
+                      },
+                    ),
+            ),
+          ],
+        ),
+      );
   }
 
   /// Single Price Quote Card (Anonymous Merchant Quote Display)
@@ -554,14 +556,16 @@ class _PriceQuotesScreenState extends State<PriceQuotesScreen> {
   }
 
   void _acceptQuote(String quoteId, bool isArabic) {
-    showModalBottomSheet(
+    showResponsiveBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-      ),
+      maxWidth: 550,
       builder: (ctx) {
         return Container(
           padding: const EdgeInsets.all(22),
+          decoration: BoxDecoration(
+            color: cardBg(context.watch<SettingsProvider>().isDarkMode),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(22)),
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

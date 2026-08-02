@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../auth/unified_login_screen.dart';
 import '../providers/settings_provider.dart';
 import '../theme/app_colors.dart';
+import '../theme/responsive_layout.dart';
 import 'settings_screen.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -22,26 +23,26 @@ class _AccountScreenState extends State<AccountScreen> {
     final isDark = settings.isDarkMode;
     final isArabic = !settings.isEnglish;
 
-    return Scaffold(
-      backgroundColor: background(isDark),
-      body: SingleChildScrollView(
+    return Container(
+      color: background(isDark),
+      child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Page Header Title inside body
-            Padding(
-              padding: const EdgeInsets.only(bottom: 14),
-              child: Text(
-                _t(isArabic, 'الملف الشخصي والحساب', 'My Profile & Account'),
-                style: GoogleFonts.cairo(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: textPrimary(isDark),
+              // Page Header Title inside body
+              Padding(
+                padding: const EdgeInsets.only(bottom: 14),
+                child: Text(
+                  _t(isArabic, 'الملف الشخصي والحساب', 'My Profile & Account'),
+                  style: GoogleFonts.cairo(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: textPrimary(isDark),
+                  ),
                 ),
               ),
-            ),
 
             // 1. User Header Profile Card
             _buildProfileHeaderCard(isArabic, isDark, settings),

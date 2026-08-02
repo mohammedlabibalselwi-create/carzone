@@ -7,6 +7,8 @@ import 'account_screen.dart';
 import 'home_screen.dart';
 import 'price_quotes_screen.dart';
 
+import '../theme/responsive_layout.dart';
+
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
 
@@ -171,12 +173,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             const SizedBox(width: 8),
           ],
         ),
-        body: IndexedStack(
-          index: _currentIndex,
-          children: pages,
+        body: ResponsiveCenter(
+          maxWidth: 1000,
+          child: IndexedStack(
+            index: _currentIndex,
+            children: pages,
+          ),
         ),
-        bottomNavigationBar:
-            _buildCustomBottomBar(isArabic, isDark, _pendingQuotesCount),
+        bottomNavigationBar: SafeArea(
+          top: false,
+          child: _buildCustomBottomBar(isArabic, isDark, _pendingQuotesCount),
+        ),
       ),
     );
   }

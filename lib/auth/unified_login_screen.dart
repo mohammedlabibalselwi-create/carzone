@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/settings_provider.dart';
 import '../theme/app_colors.dart';
+import '../theme/responsive_layout.dart';
 import 'signup_screen.dart';
 
 enum IdentifiedType { empty, phone, email }
@@ -211,253 +212,270 @@ class _UnifiedLoginScreenState extends State<UnifiedLoginScreen>
                 top: 120, left: -90, size: 200, isDark: isDark),
 
             SafeArea(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 40),
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(Icons.shield_outlined,
-                          size: 50, color: Colors.white),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      _t(isArabic, 'تسجيل الدخول', 'Sign in'),
-                      style: GoogleFonts.cairo(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 28),
-                      child: Text(
-                        _t(isArabic, 'مرحباً بعودتك! يرجى إدخال بياناتك',
-                            'Welcome back! Please enter your details'),
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.cairo(
-                            fontSize: 14, height: 1.6, color: Colors.white70),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-
-                    // Login Card
-                    Container(
-                      padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        color: cardBg(isDark),
-                        borderRadius: BorderRadius.circular(28),
-                        border: Border.all(color: cardBorder(isDark)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: cardShadow(isDark),
-                            blurRadius: 20,
-                            offset: const Offset(0, 10),
-                          )
-                        ],
-                      ),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            FadeTransition(
-                              opacity: _fade ?? kAlwaysCompleteAnimation,
-                              child: _buildInputFields(isArabic, isDark),
-                            ),
-                            const SizedBox(height: 16),
-
-                            // Submit Button
-                            SizedBox(
-                              width: double.infinity,
-                              height: 55,
-                              child: ElevatedButton(
-                                onPressed: _isLoading
-                                    ? null
-                                    : () => _handleLogin(settings, isArabic),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: buttonBg(isDark),
-                                  disabledBackgroundColor:
-                                      Colors.grey.withOpacity(0.5),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15)),
-                                  elevation: 0,
-                                ),
-                                child: _isLoading
-                                    ? const SizedBox(
-                                        width: 24,
-                                        height: 24,
-                                        child: CircularProgressIndicator(
-                                            color: Colors.white,
-                                            strokeWidth: 2),
-                                      )
-                                    : Text(
-                                        _t(isArabic, 'تسجيل الدخول', 'Sign in'),
-                                        style: GoogleFonts.cairo(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: buttonText(isDark),
-                                        ),
-                                      ),
-                              ),
-                            ),
-
-                            const SizedBox(height: 22),
-
-                            // Social Divider "أو التسجيل بواسطة"
-                            Row(
-                              children: [
-                                Expanded(
-                                    child: Divider(color: cardBorder(isDark))),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12),
-                                  child: Text(
-                                    _t(isArabic, 'أو التسجيل بواسطة',
-                                        'Or sign in with'),
-                                    style: GoogleFonts.cairo(
-                                      fontSize: 12.5,
-                                      fontWeight: FontWeight.w600,
-                                      color: textSecondary(isDark),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                    child: Divider(color: cardBorder(isDark))),
-                              ],
-                            ),
-
-                            const SizedBox(height: 16),
-
-                            // Google & Apple Buttons
-                            Row(
-                              children: [
-                                // Google
-                                Expanded(
-                                  child: Material(
-                                    color: Colors.transparent,
-                                    child: InkWell(
-                                      onTap: _isLoading
-                                          ? null
-                                          : () => _handleSocialLogin(
-                                              'Google', isArabic, settings),
-                                      borderRadius: BorderRadius.circular(16),
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 12, horizontal: 8),
-                                        decoration: BoxDecoration(
-                                          color:
-                                              cardBg(isDark).withOpacity(0.6),
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          border: Border.all(
-                                              color: cardBorder(isDark)),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const CustomGoogleIcon(size: 20),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              _t(isArabic, 'جوجل', 'Google'),
-                                              style: GoogleFonts.cairo(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: textPrimary(isDark),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                // Apple
-                                Expanded(
-                                  child: Material(
-                                    color: Colors.transparent,
-                                    child: InkWell(
-                                      onTap: _isLoading
-                                          ? null
-                                          : () => _handleSocialLogin(
-                                              'Apple', isArabic, settings),
-                                      borderRadius: BorderRadius.circular(16),
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 12, horizontal: 8),
-                                        decoration: BoxDecoration(
-                                          color:
-                                              cardBg(isDark).withOpacity(0.6),
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          border: Border.all(
-                                              color: cardBorder(isDark)),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.apple,
-                                              size: 22,
-                                              color: isDark
-                                                  ? Colors.white
-                                                  : Colors.black87,
-                                            ),
-                                            const SizedBox(width: 6),
-                                            Text(
-                                              _t(isArabic, 'أبل', 'Apple'),
-                                              style: GoogleFonts.cairo(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: textPrimary(isDark),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 15),
-
-                            TextButton.icon(
-                              onPressed: _isLoading
-                                  ? null
-                                  : () => Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (_) => const SignupScreen(),
-                                        ),
-                                      ),
-                              icon: const Icon(Icons.storefront_outlined,
-                                  size: 18, color: AppPalette.primary),
-                              label: Text(
-                                _t(isArabic, 'انضم إلينا كـ بائع شريك',
-                                    'Join us as a Seller Partner'),
-                                style: GoogleFonts.cairo(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppPalette.primary,
-                                ),
-                              ),
-                            ),
-                          ],
+              child: Center(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 520),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 40),
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.shield_outlined,
+                              size: 50, color: Colors.white),
                         ),
-                      ),
+                        const SizedBox(height: 20),
+                        Text(
+                          _t(isArabic, 'تسجيل الدخول', 'Sign in'),
+                          style: GoogleFonts.cairo(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 28),
+                          child: Text(
+                            _t(isArabic, 'مرحباً بعودتك! يرجى إدخال بياناتك',
+                                'Welcome back! Please enter your details'),
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.cairo(
+                                fontSize: 14,
+                                height: 1.6,
+                                color: Colors.white70),
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+
+                        // Login Card
+                        Container(
+                          padding: const EdgeInsets.all(24),
+                          decoration: BoxDecoration(
+                            color: cardBg(isDark),
+                            borderRadius: BorderRadius.circular(28),
+                            border: Border.all(color: cardBorder(isDark)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: cardShadow(isDark),
+                                blurRadius: 20,
+                                offset: const Offset(0, 10),
+                              )
+                            ],
+                          ),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                FadeTransition(
+                                  opacity: _fade ?? kAlwaysCompleteAnimation,
+                                  child: _buildInputFields(isArabic, isDark),
+                                ),
+                                const SizedBox(height: 16),
+
+                                // Submit Button
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 55,
+                                  child: ElevatedButton(
+                                    onPressed: _isLoading
+                                        ? null
+                                        : () =>
+                                            _handleLogin(settings, isArabic),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: buttonBg(isDark),
+                                      disabledBackgroundColor:
+                                          Colors.grey.withOpacity(0.5),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      elevation: 0,
+                                    ),
+                                    child: _isLoading
+                                        ? const SizedBox(
+                                            width: 24,
+                                            height: 24,
+                                            child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 2),
+                                          )
+                                        : Text(
+                                            _t(isArabic, 'تسجيل الدخول',
+                                                'Sign in'),
+                                            style: GoogleFonts.cairo(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: buttonText(isDark),
+                                            ),
+                                          ),
+                                  ),
+                                ),
+
+                                const SizedBox(height: 22),
+
+                                // Social Divider "أو التسجيل بواسطة"
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        child:
+                                            Divider(color: cardBorder(isDark))),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12),
+                                      child: Text(
+                                        _t(isArabic, 'أو التسجيل بواسطة',
+                                            'Or sign in with'),
+                                        style: GoogleFonts.cairo(
+                                          fontSize: 12.5,
+                                          fontWeight: FontWeight.w600,
+                                          color: textSecondary(isDark),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                        child:
+                                            Divider(color: cardBorder(isDark))),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 16),
+
+                                // Google & Apple Buttons
+                                Row(
+                                  children: [
+                                    // Google
+                                    Expanded(
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          onTap: _isLoading
+                                              ? null
+                                              : () => _handleSocialLogin(
+                                                  'Google', isArabic, settings),
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12, horizontal: 8),
+                                            decoration: BoxDecoration(
+                                              color: cardBg(isDark)
+                                                  .withOpacity(0.6),
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                              border: Border.all(
+                                                  color: cardBorder(isDark)),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                const CustomGoogleIcon(
+                                                    size: 20),
+                                                const SizedBox(width: 8),
+                                                Text(
+                                                  _t(isArabic, 'جوجل',
+                                                      'Google'),
+                                                  style: GoogleFonts.cairo(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: textPrimary(isDark),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    // Apple
+                                    Expanded(
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          onTap: _isLoading
+                                              ? null
+                                              : () => _handleSocialLogin(
+                                                  'Apple', isArabic, settings),
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12, horizontal: 8),
+                                            decoration: BoxDecoration(
+                                              color: cardBg(isDark)
+                                                  .withOpacity(0.6),
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                              border: Border.all(
+                                                  color: cardBorder(isDark)),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.apple,
+                                                  size: 22,
+                                                  color: isDark
+                                                      ? Colors.white
+                                                      : Colors.black87,
+                                                ),
+                                                const SizedBox(width: 6),
+                                                Text(
+                                                  _t(isArabic, 'أبل', 'Apple'),
+                                                  style: GoogleFonts.cairo(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: textPrimary(isDark),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 15),
+
+                                TextButton.icon(
+                                  onPressed: _isLoading
+                                      ? null
+                                      : () => Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (_) =>
+                                                  const SignupScreen(),
+                                            ),
+                                          ),
+                                  icon: const Icon(Icons.storefront_outlined,
+                                      size: 18, color: AppPalette.primary),
+                                  label: Text(
+                                    _t(isArabic, 'انضم إلينا كـ بائع شريك',
+                                        'Join us as a Seller Partner'),
+                                    style: GoogleFonts.cairo(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppPalette.primary,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

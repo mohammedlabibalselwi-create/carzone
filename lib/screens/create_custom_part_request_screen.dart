@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../providers/settings_provider.dart';
 import '../theme/app_colors.dart';
 
+import '../theme/responsive_layout.dart';
+
 class CreateCustomPartRequestScreen extends StatefulWidget {
   const CreateCustomPartRequestScreen({super.key});
 
@@ -37,6 +39,7 @@ class _CreateCustomPartRequestScreenState
     _yearController.dispose();
     _vinController.dispose();
     _partNameController.dispose();
+    _partNameController.dispose();
     _notesController.dispose();
     super.dispose();
   }
@@ -64,27 +67,30 @@ class _CreateCustomPartRequestScreenState
           ),
           centerTitle: true,
         ),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header Banner
-              _buildHeaderInfoCard(isArabic, isDark),
+        body: ResponsiveCenter(
+          maxWidth: 850,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header Banner
+                _buildHeaderInfoCard(isArabic, isDark),
 
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-              // Tab Selector: Form vs Catalog
-              _buildTabSelector(isArabic, isDark),
+                // Tab Selector: Form vs Catalog
+                _buildTabSelector(isArabic, isDark),
 
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-              // Tab Content View
-              _selectedTab == 0
-                  ? _buildFormRequestSection(isArabic, isDark)
-                  : _buildCatalogFlowSection(isArabic, isDark),
-            ],
+                // Tab Content View
+                _selectedTab == 0
+                    ? _buildFormRequestSection(isArabic, isDark)
+                    : _buildCatalogFlowSection(isArabic, isDark),
+              ],
+            ),
           ),
         ),
       ),
@@ -527,11 +533,11 @@ class _CreateCustomPartRequestScreenState
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: brands.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 220,
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
-            childAspectRatio: 1.3,
+            childAspectRatio: 1.2,
           ),
           itemBuilder: (context, index) {
             final b = brands[index];

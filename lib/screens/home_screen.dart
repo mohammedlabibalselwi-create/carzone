@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../auth/unified_login_screen.dart';
 import '../providers/settings_provider.dart';
 import '../theme/app_colors.dart';
+import '../theme/responsive_layout.dart';
 import 'create_custom_part_request_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,18 +31,18 @@ class _HomeScreenState extends State<HomeScreen> {
     final isDark = settings.isDarkMode;
     final isArabic = !settings.isEnglish;
 
-    return Scaffold(
-      backgroundColor: background(isDark),
-      body: SingleChildScrollView(
+    return Container(
+      color: background(isDark),
+      child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 1. Welcome Card
-            _buildWelcomeCard(isArabic, isDark, settings),
+              // 1. Welcome Card
+              _buildWelcomeCard(isArabic, isDark, settings),
 
-            const SizedBox(height: 20),
+              const SizedBox(height: 20),
 
             // 2. VIN & Part Number Search Bar (البحث برقم الشاصي أو رقم القطعة)
             _buildVinOrPartSearchBar(isArabic, isDark),
