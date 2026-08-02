@@ -7,7 +7,7 @@ import 'account_screen.dart';
 import 'home_screen.dart';
 import 'price_quotes_screen.dart';
 
-import '../theme/responsive_layout.dart';
+import '../../theme/responsive_layout.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});

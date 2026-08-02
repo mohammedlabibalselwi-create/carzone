@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../auth/unified_login_screen.dart';
-import '../providers/settings_provider.dart';
-import '../theme/app_colors.dart';
+import '../../auth/unified_login_screen.dart';
+import '../../providers/settings_provider.dart';
+import '../../theme/app_colors.dart';
 import 'settings_screen.dart';
 
 class AccountScreen extends StatefulWidget {

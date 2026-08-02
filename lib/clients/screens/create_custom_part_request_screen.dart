@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../providers/settings_provider.dart';
 import '../../theme/app_colors.dart';
 
-import '../theme/responsive_layout.dart';
+import '../../theme/responsive_layout.dart';
 
 class CreateCustomPartRequestScreen extends StatefulWidget {
   const CreateCustomPartRequestScreen({super.key});
@@ -321,7 +321,8 @@ class _CreateCustomPartRequestScreenState
                 Expanded(
                   child: _buildInputField(
                     controller: _vinController,
-                    label: _t(isArabic, 'رقم الشاصي (اختياري)', 'VIN (Optional)'),
+                    label:
+                        _t(isArabic, 'رقم الشاصي (اختياري)', 'VIN (Optional)'),
                     hint: '17-digit VIN',
                     icon: Icons.numbers_rounded,
                     isDark: isDark,
@@ -347,7 +348,8 @@ class _CreateCustomPartRequestScreenState
 
             // Image Upload Placeholder
             Text(
-              _t(isArabic, 'إرفاق صورة للقطعة (اختياري)', 'Attach Part Photo (Optional)'),
+              _t(isArabic, 'إرفاق صورة للقطعة (اختياري)',
+                  'Attach Part Photo (Optional)'),
               style: GoogleFonts.cairo(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -426,7 +428,8 @@ class _CreateCustomPartRequestScreenState
             _buildInputField(
               controller: _notesController,
               label: _t(isArabic, 'ملاحظات إضافية', 'Additional Notes'),
-              hint: _t(isArabic, 'أي مواصفات خاصة للقطعة...', 'Any extra details...'),
+              hint: _t(isArabic, 'أي مواصفات خاصة للقطعة...',
+                  'Any extra details...'),
               icon: Icons.notes_rounded,
               maxLines: 3,
               isDark: isDark,
@@ -631,7 +634,8 @@ class _CreateCustomPartRequestScreenState
         const SizedBox(height: 14),
 
         Text(
-          _t(isArabic, 'اختر موديل $_selectedBrand', 'Select Model for $_selectedBrand'),
+          _t(isArabic, 'اختر موديل $_selectedBrand',
+              'Select Model for $_selectedBrand'),
           style: GoogleFonts.cairo(
             fontSize: 17,
             fontWeight: FontWeight.bold,
@@ -672,7 +676,8 @@ class _CreateCustomPartRequestScreenState
                   ),
                 ),
                 subtitle: Text(
-                  _t(isArabic, 'سنوات الصنع: ${m['years']}', 'Years: ${m['years']}'),
+                  _t(isArabic, 'سنوات الصنع: ${m['years']}',
+                      'Years: ${m['years']}'),
                   style: GoogleFonts.cairo(
                     fontSize: 12,
                     color: textSecondary(isDark),
@@ -696,11 +701,26 @@ class _CreateCustomPartRequestScreenState
   /// TecAlliance Diagrams & Parts Interactive Flow Placeholder
   Widget _buildTecAlliancePartsCatalog(bool isArabic, bool isDark) {
     final categories = [
-      {'name': _t(isArabic, 'نظام المحرك والمكينة', 'Engine System'), 'icon': Icons.settings_suggest_rounded},
-      {'name': _t(isArabic, 'نظام الفرامل والقماشات', 'Brake System'), 'icon': Icons.minor_crash_rounded},
-      {'name': _t(isArabic, 'المساعدات ونظام التعليق', 'Suspension & Shock'), 'icon': Icons.build_circle_rounded},
-      {'name': _t(isArabic, 'نظام الكهرباء والحساسات', 'Electrical & Sensors'), 'icon': Icons.bolt_rounded},
-      {'name': _t(isArabic, 'قطع الهيكل والأبواب', 'Body & Doors'), 'icon': Icons.sensor_door_rounded},
+      {
+        'name': _t(isArabic, 'نظام المحرك والمكينة', 'Engine System'),
+        'icon': Icons.settings_suggest_rounded
+      },
+      {
+        'name': _t(isArabic, 'نظام الفرامل والقماشات', 'Brake System'),
+        'icon': Icons.minor_crash_rounded
+      },
+      {
+        'name': _t(isArabic, 'المساعدات ونظام التعليق', 'Suspension & Shock'),
+        'icon': Icons.build_circle_rounded
+      },
+      {
+        'name': _t(isArabic, 'نظام الكهرباء والحساسات', 'Electrical & Sensors'),
+        'icon': Icons.bolt_rounded
+      },
+      {
+        'name': _t(isArabic, 'قطع الهيكل والأبواب', 'Body & Doors'),
+        'icon': Icons.sensor_door_rounded
+      },
     ];
 
     return Column(
@@ -715,7 +735,8 @@ class _CreateCustomPartRequestScreenState
                   size: 16, color: AppPalette.primary),
               const SizedBox(width: 4),
               Text(
-                _t(isArabic, 'الرجوع لموديلات $_selectedBrand', 'Back to Models'),
+                _t(isArabic, 'الرجوع لموديلات $_selectedBrand',
+                    'Back to Models'),
                 style: GoogleFonts.cairo(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
@@ -737,7 +758,8 @@ class _CreateCustomPartRequestScreenState
           ),
           child: Row(
             children: [
-              const Icon(Icons.verified_rounded, color: AppPalette.primary, size: 24),
+              const Icon(Icons.verified_rounded,
+                  color: AppPalette.primary, size: 24),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
@@ -768,10 +790,12 @@ class _CreateCustomPartRequestScreenState
             children: [
               Row(
                 children: [
-                  const Icon(Icons.auto_awesome_rounded, color: AppPalette.accent, size: 22),
+                  const Icon(Icons.auto_awesome_rounded,
+                      color: AppPalette.accent, size: 22),
                   const SizedBox(width: 8),
                   Text(
-                    _t(isArabic, 'رسومات وتفجيرات السيارات (TecAlliance API)', 'TecAlliance Diagrams Ready'),
+                    _t(isArabic, 'رسومات وتفجيرات السيارات (TecAlliance API)',
+                        'TecAlliance Diagrams Ready'),
                     style: GoogleFonts.cairo(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -841,13 +865,16 @@ class _CreateCustomPartRequestScreenState
                   ),
                 ),
                 subtitle: Text(
-                  _t(isArabic, 'عرض الرسومات التوضيحية للقطعة', 'View exploded diagrams'),
-                  style: GoogleFonts.cairo(fontSize: 12, color: textSecondary(isDark)),
+                  _t(isArabic, 'عرض الرسومات التوضيحية للقطعة',
+                      'View exploded diagrams'),
+                  style: GoogleFonts.cairo(
+                      fontSize: 12, color: textSecondary(isDark)),
                 ),
                 trailing: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppPalette.primary,
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -912,7 +939,8 @@ class _CreateCustomPartRequestScreenState
           style: GoogleFonts.cairo(fontSize: 14, color: textPrimary(isDark)),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: GoogleFonts.cairo(fontSize: 13, color: textSecondary(isDark)),
+            hintStyle:
+                GoogleFonts.cairo(fontSize: 13, color: textSecondary(isDark)),
             prefixIcon: Icon(icon, color: AppPalette.primary),
             filled: true,
             fillColor: isDark
@@ -928,7 +956,8 @@ class _CreateCustomPartRequestScreenState
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: AppPalette.primary, width: 1.5),
+              borderSide:
+                  const BorderSide(color: AppPalette.primary, width: 1.5),
             ),
           ),
         ),
@@ -951,11 +980,13 @@ class _CreateCustomPartRequestScreenState
                 color: AppPalette.success,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.check_rounded, size: 36, color: Colors.white),
+              child: const Icon(Icons.check_rounded,
+                  size: 36, color: Colors.white),
             ),
             const SizedBox(height: 12),
             Text(
-              _t(isArabic, 'تم إرسال الطلب بنجاح!', 'Request Sent Successfully!'),
+              _t(isArabic, 'تم إرسال الطلب بنجاح!',
+                  'Request Sent Successfully!'),
               style: GoogleFonts.cairo(
                 fontWeight: FontWeight.bold,
                 fontSize: 17,

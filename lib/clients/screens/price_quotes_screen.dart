@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../providers/settings_provider.dart';
 import '../../theme/app_colors.dart';
 
-import '../theme/responsive_layout.dart';
+import '../../theme/responsive_layout.dart';
 
 class PriceQuotesScreen extends StatefulWidget {
   final Function(int count)? onPendingCountChanged;
