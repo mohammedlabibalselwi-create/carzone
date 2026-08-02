@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../providers/settings_provider.dart';
 import '../../theme/app_colors.dart';
 import '../widgets/submit_quote_bottom_sheet.dart';
+import 'submit_quote_screen.dart';
 
 class SupplierHomeScreen extends StatelessWidget {
   const SupplierHomeScreen({super.key});
@@ -186,23 +187,15 @@ class SupplierHomeScreen extends StatelessWidget {
 
   void _showSubmitQuoteSheet(BuildContext context, Map<String, dynamic> order,
       String Function(String, String) t) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (ctx) => SubmitQuoteBottomSheet(
-        orderTitle: order['part'] as String,
-        onQuoteSubmitted: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                t('تم تقديم العرض بنجاح', 'Quote submitted successfully'),
-                style: GoogleFonts.cairo(),
-              ),
-              backgroundColor: AppPalette.success,
-            ),
-          );
-        },
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => SubmitQuoteScreen(
+          orderId: order['id'] as String,
+          carType: order['carType'] as String,
+          carModel: order['carModel'] as String,
+          partName: order['part'] as String,
+        ),
       ),
     );
   }
@@ -293,13 +286,15 @@ class SupplierHomeScreen extends StatelessWidget {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             Navigator.pop(context);
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              builder: (ctx) => SubmitQuoteBottomSheet(
-                                orderTitle: order['part'] as String,
-                                onQuoteSubmitted: () {},
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => SubmitQuoteScreen(
+                                  orderId: order['id'] as String,
+                                  carType: order['carType'] as String,
+                                  carModel: order['carModel'] as String,
+                                  partName: order['part'] as String,
+                                ),
                               ),
                             );
                           },
